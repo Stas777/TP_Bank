@@ -1,16 +1,59 @@
 package accounts;
 
 public class CheckingAccount extends UniversalAccount {
-	int TotalTransactions;			// количество проведенных транзакций в текущем мес€це
-	int MounthlyQuota;				// количество допустимых транзакций
-	double PerTransactionFee;		// штраф за превышенную транзакцию
+	private int MounthlyQuota = 5;			// количество допустимых транзакций
+	private double PerTransactionFee = 1;		// штраф за превышенную транзакцию
 	
-	public double accuralOfBalance() {
-		
+	public CheckingAccount() {
+		this.setCreateData(java.util.Calendar.getInstance().getTime());
 	}
 	
-	public double fee () {
-		return (TotalTransactions - MounthlyQuota) * PerTransactionFee;
+	public CheckingAccount (double Balance){
+		this.setBalance(Balance);
+		this.setCreateData(java.util.Calendar.getInstance().getTime());
+	}	
+
+	public void invest(double s) {
+		setBalance(getBalance() + s);
+		setMounthlyQuota(getMounthlyQuota() - 1);
+	}
+	
+	public boolean remove(double s) {
+		if (getBalance() >= s) {
+			setBalance(getBalance() - s);
+			setMounthlyQuota(getMounthlyQuota() - 1);
+			return true;	
+		}
+		else
+			return false;			
+	}
+	
+	public double checkBalance() {
+		setMounthlyQuota(getMounthlyQuota() - 1);
+		return getBalance();		
+	}
+	
+	public void balanceRecalculation() {
+		if (getMounthlyQuota() < 0) {
+			setBalance(getBalance() + getMounthlyQuota() * getPerTransactionFee());
+			this.setMounthlyQuota(5);
+		}
+	}
+
+	int getMounthlyQuota() {
+		return MounthlyQuota;
+	}
+
+	void setMounthlyQuota(int mounthlyQuota) {
+		MounthlyQuota = mounthlyQuota;
+	}
+
+	double getPerTransactionFee() {
+		return PerTransactionFee;
+	}
+
+	void setPerTransactionFee(double perTransactionFee) {
+		PerTransactionFee = perTransactionFee;
 	}
 
 }

@@ -1,13 +1,25 @@
 package accounts;
 
 public class OverdraftAccount extends UniversalAccount {
-	double interestRate;
+	double interestRate = 0.2 ;
 	
-	public double accuralOfBalance() {
-		if (Balance < 0) 
-			return Balance * interestRate;
-		else 
-			return Balance;
+	public OverdraftAccount() {
+		this.setCreateData(java.util.Calendar.getInstance().getTime());
+	}
+	
+	public OverdraftAccount (double Balance){
+		this.setBalance(Balance);
+		this.setCreateData(java.util.Calendar.getInstance().getTime());
+	}
+	
+	public void balanceRecalculation() {
+		if (getBalance() < 0) 
+			setBalance(getBalance() + getBalance() * interestRate);
+	}
+	
+	public boolean remove(double s) {
+		setBalance(getBalance() - s);
+		return true;
 	}
 
 }
